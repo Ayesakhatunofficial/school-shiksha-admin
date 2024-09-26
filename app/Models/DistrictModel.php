@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
+
+class DistrictModel extends Model
+{
+    protected $table            = 'tbl_districts';
+    protected $primaryKey       = 'id';
+    protected $useAutoIncrement = true;
+    protected $returnType       = 'array';
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = true;
+    protected $allowedFields    = ['state_id', 'name', 'is_active', 'created_by'];
+
+    protected bool $allowEmptyInserts = false;
+    protected bool $updateOnlyChanged = true;
+
+    protected array $casts = [];
+    protected array $castHandlers = [];
+
+    // Dates
+    protected $useTimestamps = false;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
+    // Validation
+    protected $validationRules      = [];
+    protected $validationMessages   = [];
+    protected $skipValidation       = false;
+    protected $cleanValidationRules = true;
+
+    // Callbacks
+    protected $allowCallbacks = true;
+    protected $beforeInsert   = [];
+    protected $afterInsert    = [];
+    protected $beforeUpdate   = [];
+    protected $afterUpdate    = [];
+    protected $beforeFind     = [];
+    protected $afterFind      = [];
+    protected $beforeDelete   = [];
+    protected $afterDelete    = [];
+
+    public function fetchStates()
+    {
+        try {
+            $query = $this->db->table('tbl_states');
+
+            $result = $query->get()->getResultArray();
+
+            if ($result) {
+                return $result; // Return the fetched rows
+            } else {
+                return []; // Return an empty array if no rows found
+            }
+        } catch (\Exception $e) {
+            error_log('Error fetching roles: ' . $e->getMessage());
+            return false; // Return false or appropriate value to indicate failure
+        }
+    }
+}
